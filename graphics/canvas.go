@@ -126,3 +126,9 @@ func (me *Canvas) DrawImage(img *Image, x, y int) {
 	dest.y = C.Sint16(y + me.origin.Y)
 	C.SDL_BlitSurface(img.img, nil, me.pane, &dest)
 }
+
+func (me *Canvas) DrawImageRotZoom(img *Image, x, y int, angle, zoom float64, smooth int) {
+	var newImage *Image
+	newImage.img = C.rotozoomSurface(img.img, C.double(angle), C.double(zoom), C.int(smooth))
+	me.DrawImage(newImage, x, y)
+}
