@@ -25,6 +25,12 @@ import (
 )
 
 func Main() {
+	for {
+		<-kill
+	}
+}
+
+func MainIteration() {
 	<-kill
 }
 

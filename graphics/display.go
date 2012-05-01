@@ -53,7 +53,7 @@ var screen *C.SDL_Surface
 var displayTitle string
 var drawers []*canvasHolder
 var displayDead chan interface{}
-var kill = make(chan interface{})
+var kill = make(chan interface{}, 1)
 
 //Sets the title of the window.
 func SetDisplayTitle(title string) {
