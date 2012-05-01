@@ -128,7 +128,7 @@ func (me *Canvas) DrawImage(img *Image, x, y int) {
 }
 
 func (me *Canvas) DrawImageRotoZoom(img *Image, x, y int, angle, zoom float64, smooth int) {
-	var newImage *Image
+	var newImage Image
 	newImage.img = C.rotozoomSurface(img.img, C.double(angle), C.double(zoom), C.int(smooth))
-	me.DrawImage(newImage, x, y)
+	me.DrawImage(&newImage, x, y)
 }
