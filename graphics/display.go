@@ -117,23 +117,6 @@ func RemoveDrawFunc(drawer func(*Canvas)) {
 	}
 }
 
-func run() {
-	for {
-		select {
-		case <-kill:
-			break
-		default:
-			for _, a := range drawers {
-				a.canvas.pane = screen
-				a.canvas.load()
-				a.drawer.Draw(&a.canvas)
-			}
-			C.SDL_Flip(screen)
-		}
-		time.Sleep(16000000)
-	}
-}
-
 //Opens a window.
 //Returns an indicator of success.
 func OpenDisplay(width, height int, fullscreen bool) bool {
@@ -155,7 +138,7 @@ func OpenDisplay(width, height int, fullscreen bool) bool {
 	}
 	C.SDL_WM_SetCaption(C.CString(displayTitle), C.CString(""))
 	C.SDL_GL_SetAttribute(C.SDL_GL_SWAP_CONTROL, 1)
-	go run()
+
 	return true
 }
 
@@ -167,4 +150,30 @@ func CloseDisplay() {
 		screen = nil
 		C.SDL_Quit()
 	}
+}
+
+func MainIteration() {
+	select {
+	case <-kill:
+		break
+	default:
+		for _, a := range drawers {
+			a.canvas.pane = screen
+			a.canvas.load()
+			a.drawer.Draw(&a.canvas)
+		}
+		C.SDL_Flip(screen)
+	}
+	time.Sleep(16000000)
+}
+
+func run() {
+	for {
+		MainIteration()
+	}
+}
+
+func Main() {
+	go run()
+	<-kill
 }
