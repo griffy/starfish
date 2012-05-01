@@ -152,10 +152,10 @@ func CloseDisplay() {
 	}
 }
 
-func MainIteration() {
+func MainIteration() (quit bool) {
 	select {
 	case <-kill:
-		break
+		quit = true
 	default:
 		for _, a := range drawers {
 			a.canvas.pane = screen
@@ -165,17 +165,23 @@ func MainIteration() {
 		C.SDL_Flip(screen)
 	}
 	time.Sleep(16000000)
+	quit = false
+	return
 }
 
 func run() {
 	for {
-		MainIteration()
+		if quit := MainIteration(); quit {
+			break;
+		}
 	}
 }
 
 func Main() {
 	for {
-		MainIteration()
+		if quit := MainIteration(); quit {
+			break;
+		}
 	}
 	//go run()
 	//<-kill
