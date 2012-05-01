@@ -174,6 +174,9 @@ func run() {
 }
 
 func Main() {
-	go run()
-	<-kill
+	for {
+		MainIteration()
+	}
+	//go run()
+	//<-kill
 }
