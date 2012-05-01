@@ -178,11 +178,6 @@ func run() {
 }
 
 func Main() {
-	for {
-		if quit := MainIteration(); quit {
-			break;
-		}
-	}
-	//go run()
-	//<-kill
+    go run()
+    <-kill
 }
